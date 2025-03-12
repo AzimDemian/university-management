@@ -1,5 +1,5 @@
 package model.person;
-
+import model.AtError; 
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -11,8 +11,13 @@ public abstract class Person {
     private String email;
     private final LocalDate dateOfBirth;
 
-    protected Person(int id, String fullName, String address, String phone, String email, LocalDate dateOfBirth) {
-        this.id = id;
+    protected Person(int id, String fullName, String address, String phone, String email, LocalDate dateOfBirth) throws Exception{
+        if(id < 0){
+            throw new Exception("Id should be positive");
+        }
+        else{
+            this.id = id;
+        }
         this.fullName = fullName;
         this.address = address;
         this.phone = phone;
@@ -40,8 +45,8 @@ public abstract class Person {
     }
     // Setters
     public void setAddress(String address) { this.address = address; }
-    public void setPhone(String phone) { this.phone = phone; }
-    public void setEmail(String email) { this.email = email; }
+    public void setPhone(String phone) throws Exception {if(phone.charAt(0) != '+'){throw new Exception("The first symbol should be +"); } else{ this.phone = phone; }}
+    public void setEmail(String email)  { if(email.indexOf("@") != 1) {throw new AtError();} else{this.email = email;}}
 
     @Override
     public boolean equals(Object o) {
